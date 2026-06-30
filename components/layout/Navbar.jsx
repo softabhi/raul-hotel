@@ -71,7 +71,7 @@ export default function Navbar() {
       </div>
 
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled || !isHome
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${scrolled || !isHome
           ? "bg-[#0F172A]/95 backdrop-blur-xl shadow-2xl py-3 top-0"
           : "bg-transparent py-5 top-7"
           }`}

@@ -14,7 +14,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const food = getFoodById(params.id);
+  const resolvedParams = await params;
+  const food = getFoodById(resolvedParams.id);
   if (!food) return { title: "Dish Not Found" };
   return {
     title: `${food.name} | LuxeStay Restaurant`,
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function FoodDetailPage({ params }) {
-  const food = getFoodById(params.id);
+  const resolvedParams = await params;
+  const food = getFoodById(resolvedParams.id);
   if (!food) notFound();
 
   const related = foods.filter((f) => f.category === food.category && f.id !== food.id).slice(0, 4);

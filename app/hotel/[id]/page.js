@@ -14,7 +14,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const room = getRoomById(params.id);
+  const resolvedParams = await params;
+  const room = getRoomById(resolvedParams.id);
   if (!room) return { title: "Room Not Found" };
   return {
     title: `${room.name} | LuxeStay Hotel`,
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function RoomDetailPage({ params }) {
-  const room = getRoomById(params.id);
+  const resolvedParams = await params;
+  const room = getRoomById(resolvedParams.id);
   if (!room) notFound();
 
   const similar = rooms.filter((r) => r.category === room.category && r.id !== room.id).slice(0, 3);
