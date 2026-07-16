@@ -1,0 +1,178 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Room;
+
+class RoomController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $query = Room::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('availability')) {
+            $status = $request->availability === 'available';
+            $query->where('available', $status);
+        }
+
+        $rooms = $query->latest()->paginate(10)->withQueryString();
+        $categories = ['Standard', 'Deluxe', 'Suite', 'Presidential'];
+
+        return view('rooms.index', compact('rooms', 'categories'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $categories = ['Standard', 'Deluxe', 'Suite', 'Presidential'];
+        return view('rooms.create', compact('categories'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|integer|min:0',
+            'original_price' => 'nullable|integer|min:0',
+            'capacity' => 'required|integer|min:1',
+            'size' => 'required|string',
+            'bed' => 'required|string',
+            'floor' => 'required|string',
+            'view' => 'required|string',
+            'available' => 'required|boolean',
+            'images' => 'required|array|min:1',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+            'amenities' => 'nullable|string', // Comma separated, we will split into array
+            'description' => 'required|string',
+            'highlights' => 'nullable|string', // Comma separated, we will split into array
+        ]);
+
+        // Process comma-separated strings to array
+        if (!empty($validated['amenities'])) {
+            $validated['amenities'] = array_map('trim', explode(',', $validated['amenities']));
+        } else {
+            $validated['amenities'] = [];
+        }
+
+        if (!empty($validated['highlights'])) {
+            $validated['highlights'] = array_map('trim', explode(',', $validated['highlights']));
+        } else {
+            $validated['highlights'] = [];
+        }
+
+        $imageUrls = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('rooms', 'public');
+                $imageUrls[] = asset('storage/' . $path);
+            }
+        }
+
+        if (empty($imageUrls)) {
+            $imageUrls[] = 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80';
+        }
+
+        $validated['image'] = json_encode($imageUrls);
+
+        Room::create($validated);
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Room created successfully.');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Room $room)
+    {
+        $categories = ['Standard', 'Deluxe', 'Suite', 'Presidential'];
+        
+        // Convert array back to comma-separated string for editing
+        $room->amenities_str = is_array($room->amenities) ? implode(', ', $room->amenities) : '';
+        $room->highlights_str = is_array($room->highlights) ? implode(', ', $room->highlights) : '';
+
+        return view('rooms.edit', compact('room', 'categories'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Room $room)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|integer|min:0',
+            'original_price' => 'nullable|integer|min:0',
+            'capacity' => 'required|integer|min:1',
+            'size' => 'required|string',
+            'bed' => 'required|string',
+            'floor' => 'required|string',
+            'view' => 'required|string',
+            'available' => 'required|boolean',
+            'existing_images' => 'nullable|array',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+            'amenities' => 'nullable|string',
+            'description' => 'required|string',
+            'highlights' => 'nullable|string',
+        ]);
+
+        if (!empty($validated['amenities'])) {
+            $validated['amenities'] = array_map('trim', explode(',', $validated['amenities']));
+        } else {
+            $validated['amenities'] = [];
+        }
+
+        if (!empty($validated['highlights'])) {
+            $validated['highlights'] = array_map('trim', explode(',', $validated['highlights']));
+        } else {
+            $validated['highlights'] = [];
+        }
+
+        $imageUrls = $request->input('existing_images', []);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('rooms', 'public');
+                $imageUrls[] = asset('storage/' . $path);
+            }
+        }
+
+        if (empty($imageUrls)) {
+            $imageUrls[] = 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80';
+        }
+
+        $validated['image'] = json_encode($imageUrls);
+
+        $room->update($validated);
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Room updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Room $room)
+    {
+        $room->delete();
+        return redirect()->route('admin.rooms.index')->with('success', 'Room deleted successfully.');
+    }
+}
