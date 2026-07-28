@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import ImageSlider from "@/components/ui/ImageSlider";
 import StarRating from "@/components/ui/StarRating";

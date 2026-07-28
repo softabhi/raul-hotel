@@ -125,49 +125,62 @@
     <!-- Room Images Section -->
     <div>
         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Room Images</label>
-        
-        <!-- Existing images list -->
-        @if(count($room->images) > 0)
-            <div class="mb-4">
-                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Current Images (Remove any that are no longer needed)</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
-                    @foreach($room->images as $index => $imgUrl)
-                        <div class="relative aspect-video rounded-xl overflow-hidden border border-slate-200 bg-slate-100 group" id="existing-img-{{ $index }}">
-                            <img src="{{ $imgUrl }}" class="w-full h-full object-cover">
-                            <input type="hidden" name="existing_images[]" value="{{ $imgUrl }}">
-                            <button type="button" onclick="removeExistingImage('existing-img-{{ $index }}')" 
-                                    class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center hover:bg-rose-600 transition-colors shadow-sm active:scale-95 cursor-pointer" 
-                                    title="Remove this image">
-                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
 
-        <!-- Upload New Images -->
-        <div class="border-2 border-dashed border-slate-200 rounded-2xl p-6 hover:border-amber-500 transition-colors bg-slate-50/50">
+        <!-- ─── Existing Images ─── -->
+        <div id="existing-images-wrapper" class="mb-4 {{ count($room->images) > 0 ? '' : 'hidden' }}">
+            <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Current Images — click <span class="text-rose-500">✕</span> to remove</p>
+            <div id="existing-images-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                @foreach($room->images as $index => $imgUrl)
+                    @php
+                        // Resolve relative /storage/... paths to full URL for display
+                        $displayUrl = str_starts_with($imgUrl, '/') ? url($imgUrl) : $imgUrl;
+                    @endphp
+                    <div class="existing-img-item relative aspect-video rounded-xl overflow-hidden border border-slate-200 bg-slate-100" data-url="{{ $imgUrl }}">
+                        <input type="hidden" name="existing_images[]" value="{{ $imgUrl }}">
+                        <img src="{{ $displayUrl }}" class="w-full h-full object-cover" alt="Room image {{ $index + 1 }}" loading="lazy">
+                        <!-- Delete button — always visible in top-right corner -->
+                        <button type="button"
+                                onclick="removeExistingImage(this)"
+                                class="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-500 hover:bg-rose-600 active:scale-90 text-white flex items-center justify-center shadow-md transition-all z-10 cursor-pointer"
+                                title="Remove this image">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <div id="no-existing-msg" class="{{ count($room->images) > 0 ? 'hidden' : '' }} mb-3">
+            <p class="text-xs text-slate-400 italic">No existing images — upload new ones below.</p>
+        </div>
+
+        <!-- ─── Upload New Images ─── -->
+        <div class="border-2 border-dashed border-slate-200 rounded-2xl p-6 hover:border-amber-400 transition-colors bg-slate-50/50">
             <div class="flex flex-col items-center justify-center text-center">
-                <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-400 mb-2"></i>
-                <p class="text-xs font-semibold text-slate-600 mb-1">Click to upload new images</p>
-                <p class="text-[10px] text-slate-400">PNG, JPG, JPEG, WEBP or SVG up to 5MB</p>
-                <input type="file" name="images[]" multiple accept="image/*" class="hidden" id="room_images" onchange="previewImages(this, 'preview-container')">
-                <label for="room_images" class="mt-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer transition-colors shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <p class="text-xs font-semibold text-slate-600 mb-1">Click to add new images</p>
+                <p class="text-[10px] text-slate-400">PNG, JPG, JPEG, WEBP up to 5MB each. You can add multiple batches.</p>
+                <!-- Hidden real input — no name; we use a dynamic hidden input approach -->
+                <input type="file" id="room_images_picker" multiple accept="image/*" class="hidden" onchange="addNewImages(this)">
+                <label for="room_images_picker" class="mt-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer transition-colors shadow-sm select-none">
                     Select Images
                 </label>
             </div>
-            <!-- Preview grid for new images -->
-            <div id="preview-container" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-6 hidden">
-                <!-- New preview items will be dynamically injected here -->
-            </div>
+
+            <!-- Preview grid for queued new images -->
+            <div id="new-images-preview" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-5 hidden"></div>
+
+            <!-- Counter badge -->
+            <p id="new-images-count" class="text-center text-[10px] text-amber-600 font-semibold mt-3 hidden"></p>
         </div>
+
+        <!-- Hidden container where real file inputs are placed per-image -->
+        <div id="new-images-inputs" class="hidden"></div>
     </div>
 
     <!-- Amenities (Comma-separated) -->
     <div>
         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Amenities (Comma separated list)</label>
-        <textarea name="amenities" rows="2" 
+        <textarea name="amenities" rows="2"
                   placeholder="Free WiFi, Air Conditioning, Flat Screen TV, Mini Bar, Jacuzzi, Balcony, Safe"
                   class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all text-xs">{{ old('amenities', $room->amenities_str) }}</textarea>
     </div>
@@ -175,7 +188,7 @@
     <!-- Highlights (Comma-separated) -->
     <div>
         <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Highlights (Comma separated list)</label>
-        <textarea name="highlights" rows="2" 
+        <textarea name="highlights" rows="2"
                   placeholder="Private pool access, Complimentary airport transfer, 24/7 butler service"
                   class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all text-xs">{{ old('highlights', $room->highlights_str) }}</textarea>
     </div>
@@ -190,11 +203,11 @@
 
     <!-- Submit buttons -->
     <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
-        <a href="{{ route('admin.rooms.index') }}" 
+        <a href="{{ route('admin.rooms.index') }}"
            class="px-5 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 font-bold text-xs text-slate-500 hover:text-slate-800 transition-colors">
             Cancel
         </a>
-        <button type="submit" 
+        <button type="submit"
                 class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md text-xs active:scale-[0.98] cursor-pointer">
             Save Changes
         </button>
@@ -203,38 +216,105 @@
 </form>
 
 <script>
-    function removeExistingImage(elementId) {
-        if (confirm('Are you sure you want to remove this image? It will be saved when you submit the form.')) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.remove();
-            }
+    // ─── Remove an existing (already-saved) image ───────────────────────────
+    function removeExistingImage(btn) {
+        const item = btn.closest('.existing-img-item');
+        if (!item) return;
+        if (!confirm('Remove this image? This takes effect when you save.')) return;
+
+        item.remove();
+
+        // If no existing images left, show the "no existing images" message
+        const grid = document.getElementById('existing-images-grid');
+        if (grid && grid.querySelectorAll('.existing-img-item').length === 0) {
+            document.getElementById('existing-images-wrapper').classList.add('hidden');
+            document.getElementById('no-existing-msg').classList.remove('hidden');
         }
     }
-    
-    function previewImages(input, containerId) {
-        const container = document.getElementById(containerId);
+
+    // ─── Accumulative new-image picker ──────────────────────────────────────
+    // We store queued File objects in a JS array, then sync them to hidden
+    // <input type="file"> elements right before form submit.
+    let queuedFiles = [];   // array of File objects
+
+    function addNewImages(input) {
+        if (!input.files || input.files.length === 0) return;
+
+        Array.from(input.files).forEach(file => {
+            // Avoid duplicates by name+size
+            const isDupe = queuedFiles.some(f => f.name === file.name && f.size === file.size);
+            if (!isDupe) queuedFiles.push(file);
+        });
+
+        // Reset the picker so the same file can be re-selected later
+        input.value = '';
+
+        renderNewPreviews();
+    }
+
+    function renderNewPreviews() {
+        const container = document.getElementById('new-images-preview');
+        const countBadge = document.getElementById('new-images-count');
         container.innerHTML = '';
-        if (input.files && input.files.length > 0) {
-            container.classList.remove('hidden');
-            Array.from(input.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'relative aspect-video rounded-xl overflow-hidden border border-slate-200 bg-slate-100 group';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span class="text-[10px] text-white font-medium truncate px-2 w-full text-center">${file.name}</span>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                }
-                reader.readAsDataURL(file);
-            });
-        } else {
+
+        if (queuedFiles.length === 0) {
             container.classList.add('hidden');
+            countBadge.classList.add('hidden');
+            return;
         }
+
+        container.classList.remove('hidden');
+        countBadge.classList.remove('hidden');
+        countBadge.textContent = `${queuedFiles.length} new image${queuedFiles.length > 1 ? 's' : ''} queued for upload`;
+
+        queuedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-video rounded-xl overflow-hidden border border-slate-200 bg-slate-100 group';
+                div.dataset.index = index;
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="w-full h-full object-cover" alt="${file.name}">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                        <span class="text-[9px] text-white font-medium truncate px-2 pb-1 w-full">${file.name}</span>
+                    </div>
+                    <button type="button" onclick="removeQueuedImage(${index})"
+                            class="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-500 hover:bg-rose-600 active:scale-90 text-white flex items-center justify-center shadow-md transition-all z-10 cursor-pointer"
+                            title="Remove from queue">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                `;
+                container.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
     }
+
+    function removeQueuedImage(index) {
+        queuedFiles.splice(index, 1);
+        renderNewPreviews();
+    }
+
+    // ─── Before submit: inject queued files as real form inputs ─────────────
+    // Because file inputs cannot be set programmatically, we use a single
+    // DataTransfer trick to attach all queued files to one hidden input.
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const inputsDiv = document.getElementById('new-images-inputs');
+        inputsDiv.innerHTML = ''; // clear old
+
+        if (queuedFiles.length > 0) {
+            const dt = new DataTransfer();
+            queuedFiles.forEach(f => dt.items.add(f));
+
+            const inp = document.createElement('input');
+            inp.type = 'file';
+            inp.name = 'images[]';
+            inp.multiple = true;
+            inp.files = dt.files;    // assign the FileList
+            inputsDiv.appendChild(inp);
+        }
+        // If queuedFiles is empty, no images[] input is submitted — existing_images[] handles the rest
+    });
 </script>
 @endsection
+

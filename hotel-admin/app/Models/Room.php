@@ -55,11 +55,11 @@ class Room extends Model
     public function getImageAttribute($value)
     {
         if (empty($value)) {
-            return 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80';
+            return null;
         }
         $decoded = json_decode($value, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-            return $decoded[0] ?? 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80';
+            return $decoded[0] ?? null;
         }
         return $value;
     }

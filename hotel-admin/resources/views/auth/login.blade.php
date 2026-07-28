@@ -11,7 +11,7 @@
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 font-bold text-2xl shadow-lg mb-4">
             <i data-lucide="hotel" class="w-8 h-8"></i>
         </div>
-        <h1 class="font-playfair text-3xl font-bold text-white tracking-wide">THE LUXURY RESORT</h1>
+        <h1 class="font-playfair text-3xl font-bold text-white tracking-wide">THE RAUL'S BOUTIQUE</h1>
         <p class="text-slate-400 text-sm mt-1">Admin Portal Control Panel</p>
     </div>
 

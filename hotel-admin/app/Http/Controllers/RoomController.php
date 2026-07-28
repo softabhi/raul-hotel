@@ -82,15 +82,12 @@ class RoomController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $path = $file->store('rooms', 'public');
-                $imageUrls[] = asset('storage/' . $path);
+                // Store as relative path so it works on any host/port
+                $imageUrls[] = '/storage/' . $path;
             }
         }
 
-        if (empty($imageUrls)) {
-            $imageUrls[] = 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80';
-        }
-
-        $validated['image'] = json_encode($imageUrls);
+        $validated['image'] = !empty($imageUrls) ? json_encode($imageUrls) : null;
 
         Room::create($validated);
 
@@ -152,15 +149,12 @@ class RoomController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $path = $file->store('rooms', 'public');
-                $imageUrls[] = asset('storage/' . $path);
+                // Store as relative path so it works on any host/port
+                $imageUrls[] = '/storage/' . $path;
             }
         }
 
-        if (empty($imageUrls)) {
-            $imageUrls[] = 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80';
-        }
-
-        $validated['image'] = json_encode($imageUrls);
+        $validated['image'] = !empty($imageUrls) ? json_encode($imageUrls) : null;
 
         $room->update($validated);
 

@@ -1,31 +1,49 @@
+// import { rooms, getRoomById } from "@/data/rooms";
+
+import { foods, getFoodById } from "@/data/foods";
+
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 /**
- * Fetch all rooms from the API.
+ * Fetch all rooms from the API (with fallback).
  */
 export async function fetchRooms() {
+
+  const rooms='';
+
   try {
     const res = await fetch(`${API_URL}/api/rooms`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch rooms");
-    return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+
+      if (Array.isArray(data) && data.length > 0) return data;
+
+    }
+
+    // console.warn("Failed to fetch rooms:", data);
+
   } catch (error) {
-    console.error(error);
-    return [];
+    // Silent fallback to avoid HMR error log loop
   }
+  return rooms;
 }
 
 /**
- * Fetch a single room by its ID.
+ * Fetch a single room by its ID (with fallback).
  */
 export async function fetchRoomById(id) {
+  
   try {
     const res = await fetch(`${API_URL}/api/rooms/${id}`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch room detail");
-    return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+
+      if (data && data.id) return data;
+    }
   } catch (error) {
-    console.error(error);
-    return null;
+    // Silent fallback to avoid HMR error log loop
   }
+  return getRoomById(id) || rooms.find(r => String(r.id) === String(id)) || null;
 }
 
 /**
@@ -43,31 +61,35 @@ export async function createBooking(bookingData) {
 }
 
 /**
- * Fetch all food menu items from the API.
+ * Fetch all food menu items from the API (with fallback).
  */
 export async function fetchFoods() {
   try {
     const res = await fetch(`${API_URL}/api/foods`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch foods menu");
-    return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) return data;
+    }
   } catch (error) {
-    console.error(error);
-    return [];
+    // Silent fallback to avoid HMR error log loop
   }
+  return foods;
 }
 
 /**
- * Fetch a single food item by its ID.
+ * Fetch a single food item by its ID (with fallback).
  */
 export async function fetchFoodById(id) {
   try {
     const res = await fetch(`${API_URL}/api/foods/${id}`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch food detail");
-    return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.id) return data;
+    }
   } catch (error) {
-    console.error(error);
-    return null;
+    // Silent fallback to avoid HMR error log loop
   }
+  return getFoodById(id) || foods.find(f => String(f.id) === String(id)) || null;
 }
 
 /**

@@ -12,6 +12,32 @@ use Carbon\Carbon;
 class ApiController extends Controller
 {
     /**
+     * Resolve image paths to fully-qualified URLs.
+     * Handles both legacy absolute URLs and new relative /storage/... paths.
+     */
+    private function resolveImages($images): array
+    {
+        if (empty($images)) {
+            return [];
+        }
+        $baseUrl = rtrim(config('app.url'), '/');
+        $resolved = [];
+        foreach ((array) $images as $img) {
+            // Skip external/hardcoded image URLs (e.g. Unsplash) — only serve real uploads
+            if (str_starts_with($img, 'https://images.unsplash.com')) {
+                continue;
+            }
+            // Already a full http URL pointing to local storage
+            if (str_starts_with($img, 'http://') || str_starts_with($img, 'https://')) {
+                $resolved[] = $img;
+                continue;
+            }
+            // Relative /storage/... path — prepend app base URL
+            $resolved[] = $baseUrl . '/' . ltrim($img, '/');
+        }
+        return $resolved;
+    }
+    /**
      * Get all rooms formatted for Next.js frontend.
      */
     public function rooms()
@@ -32,7 +58,7 @@ class ApiController extends Controller
                 'rating' => $room->rating,
                 'reviewCount' => $room->review_count,
                 'available' => (bool)$room->available,
-                'images' => $room->images,
+                'images' => $this->resolveImages($room->images),
                 'amenities' => $room->amenities ?? [],
                 'description' => $room->description,
                 'highlights' => $room->highlights ?? [],
@@ -66,7 +92,7 @@ class ApiController extends Controller
             'rating' => $room->rating,
             'reviewCount' => $room->review_count,
             'available' => (bool)$room->available,
-            'images' => $room->images,
+            'images' => $this->resolveImages($room->images),
             'amenities' => $room->amenities ?? [],
             'description' => $room->description,
             'highlights' => $room->highlights ?? [],

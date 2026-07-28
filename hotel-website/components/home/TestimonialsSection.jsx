@@ -9,7 +9,7 @@ const testimonials = [
     name: "Priya Sharma",
     role: "Business Traveler",
     location: "Mumbai, India",
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&q=80",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
     rating: 5,
     review: "Absolutely stunning hotel! The Presidential Suite exceeded every expectation. The butler service was impeccable, and the restaurant's biryani is honestly the best I've ever had. Will definitely return.",
     stay: "Presidential Suite",

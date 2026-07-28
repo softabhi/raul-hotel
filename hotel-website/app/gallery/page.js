@@ -12,7 +12,7 @@ const galleryImages = [
   { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80", label: "Standard Room", category: "Rooms", span: "" },
   { src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", label: "Fine Dining", category: "Restaurant", span: "" },
   { src: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80", label: "Presidential Suite", category: "Rooms", span: "" },
-  { src: "https://images.unsplash.com/photo-1563379091339-03246963d96c?w=800&q=80", label: "Chicken Biryani", category: "Food", span: "" },
+  { src: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80", label: "Chicken Biryani", category: "Food", span: "" },
   { src: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80", label: "Pool View Room", category: "Rooms", span: "col-span-2" },
   { src: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80", label: "Hotel Exterior", category: "Hotel", span: "" },
   { src: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=80", label: "Spa & Wellness", category: "Facilities", span: "" },

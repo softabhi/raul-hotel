@@ -1,7 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 
 export default function ImageSlider({ images = [], alt = "Image", className = "", height = 240, showDots = true, showArrows = true }) {
   const [current, setCurrent] = useState(0);
@@ -22,14 +22,24 @@ export default function ImageSlider({ images = [], alt = "Image", className = ""
     [images.length]
   );
 
-  if (!images.length) return null;
+  if (!images.length) {
+    return (
+      <div
+        className={`relative overflow-hidden rounded-t-2xl flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 ${className}`}
+        style={{ height }}
+      >
+        <ImageOff size={36} className="text-gray-300" />
+        <p className="text-gray-400 text-xs font-medium">No Image Available</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`relative overflow-hidden rounded-t-2xl group ${className}`} style={{ height }}>
       {/* Images */}
       <div
         className="flex h-full transition-transform duration-500 ease-out"
-        style={{ transform: `translateX(-${current * 100}%)`, width: `${images.length * 100}%` }}
+        style={{ transform: `translateX(-${current * (100 / images.length)}%)`, width: `${images.length * 100}%` }}
       >
         {images.map((src, i) => (
           <div key={i} className="relative flex-shrink-0" style={{ width: `${100 / images.length}%`, height: "100%" }}>
@@ -40,6 +50,7 @@ export default function ImageSlider({ images = [], alt = "Image", className = ""
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 400px"
               priority={i === 0}
+              unoptimized
             />
           </div>
         ))}

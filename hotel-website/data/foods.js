@@ -41,7 +41,7 @@ export const foods = [
     isPopular: true,
     isBestSeller: true,
     images: [
-      "https://images.unsplash.com/photo-1563379091339-03246963d96c?w=800&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
       "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800&q=80",
       "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80",
     ],

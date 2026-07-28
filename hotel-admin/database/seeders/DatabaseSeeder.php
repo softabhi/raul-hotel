@@ -217,7 +217,7 @@ class DatabaseSeeder extends Seeder
                 'spice_level' => 'Medium-Hot',
                 'is_popular' => true,
                 'is_bestseller' => true,
-                'image' => 'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80',
                 'description' => 'Aromatic long-grain basmati rice layered with succulent chicken pieces marinated in yogurt and spices, slow-cooked to perfection.',
                 'ingredients' => ["Basmati Rice", "Chicken", "Yogurt", "Saffron", "Whole Spices", "Caramelized Onions", "Mint", "Ghee"],
                 'tags' => ["Aromatic", "Signature Dish", "Bestseller"],
