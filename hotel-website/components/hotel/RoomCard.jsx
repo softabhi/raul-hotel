@@ -70,7 +70,7 @@ export default function RoomCard({ room }) {
               <span className="text-xs text-gray-400 line-through">₹{room.originalPrice.toLocaleString()}</span>
             </div>
             <p className="text-xs text-gray-400">per night + taxes</p>
-          </div>
+          </div>  
           <div className="flex gap-2">
             <Link href={`/hotel/${room.id}`} className="btn-outline-gold !py-2 !px-3 !text-xs">
               Details

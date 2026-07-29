@@ -1,14 +1,14 @@
-import { Wifi, Utensils, Car, Dumbbell, Waves, Shield, Clock, Coffee } from "lucide-react";
+import { Wifi, Utensils, Car, Dumbbell, Waves, Shield, Clock, Coffee, Airplay } from "lucide-react";
 
 const features = [
   { icon: Wifi, title: "Free High-Speed WiFi", desc: "Blazing fast 1Gbps internet throughout the property" },
-  { icon: Utensils, title: "Fine Dining Restaurant", desc: "Award-winning restaurant open 7 days a week" },
+  { icon: Utensils, title: "Fine Dining", desc: "Award-winning restaurant open 7 days a week" },
   { icon: Car, title: "Valet Parking", desc: "Complimentary valet service for all guests" },
-  { icon: Dumbbell, title: "Fitness Center", desc: "State-of-the-art gym with personal trainers" },
+  { icon: Airplay, title: "App Service", desc: "Guest convinience service app" },
   { icon: Waves, title: "Infinity Pool", desc: "Rooftop pool with panoramic city views" },
   { icon: Shield, title: "24/7 Security", desc: "Round-the-clock security for your peace of mind" },
   { icon: Clock, title: "24/7 Room Service", desc: "In-room dining available around the clock" },
-  { icon: Coffee, title: "Spa & Wellness", desc: "Rejuvenating spa treatments and wellness therapies" },
+  { icon: Coffee, title: "Cafe & Refreshments", desc: "Tea, Coffee, Mineral Water" },
 ];
 
 export default function FeaturesSection() {

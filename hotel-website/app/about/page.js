@@ -54,10 +54,17 @@ export default function AboutPage() {
                   15 Years of <span className="gold-text">Excellence</span>
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Founded in 2009, LuxeStay & Dine has grown from a boutique hotel with 20 rooms to one of Mumbai's most celebrated luxury destinations. Our journey has been one of relentless pursuit of perfection — in every room, every dish, every smile.
+
+                  Welcome to Dona Paula, Goa, where lush greenery meets the vast Arabian Sea.
+
+                  I am the General Manager of Raul's Boutique Hotel. We offer a serene, intimate escape designed around absolute privacy, because we believe you should be treated like a king
+
                 </p>
                 <p className="text-gray-600 leading-relaxed mb-6">
-                  We believe hospitality is an art form. Every guest who walks through our doors deserves to feel truly welcomed, cared for, and indulged. From our meticulously crafted suites to our award-winning restaurant, we pour our hearts into every detail.
+                  Experience our exclusive private yacht cruises and personalized service right at your fingertips. Plus, get ready—our tailor-made corporate weekend packages are coming very soon
+
+                  Come for a stay, leave with a story. Call us today at 8830208310 to book your unforgettable Goan getaway
+
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   {[

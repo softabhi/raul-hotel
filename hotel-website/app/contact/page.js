@@ -41,21 +41,21 @@ export default function ContactPage() {
                     <MapPin size={20} className="text-[#D4A853] shrink-0 mt-0.5" />
                     <div>
                       <p className="font-medium text-sm">Address</p>
-                      <p className="text-gray-400 text-sm">12 Luxury Avenue, Bandra West,<br />Mumbai — 400050, India</p>
+                      <p className="text-gray-400 text-sm">H. No.355, Machado Cove, Lane No.-09, <br />Dona Paula, Pannum, Goa 403004,</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone size={20} className="text-[#D4A853]" />
                     <div>
                       <p className="font-medium text-sm">Phone</p>
-                      <a href="tel:+919876543210" className="text-gray-400 text-sm hover:text-[#D4A853]">+91 98765 43210</a>
+                      <a href="tel:+919876543210" className="text-gray-400 text-sm hover:text-[#D4A853]">+91 88302 08310</a>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail size={20} className="text-[#D4A853]" />
                     <div>
                       <p className="font-medium text-sm">Email</p>
-                      <a href="mailto:hello@luxestaydine.com" className="text-gray-400 text-sm hover:text-[#D4A853]">hello@luxestaydine.com</a>
+                      <a href="mailto:resv@raulsboutiquehotel.com" className="text-gray-400 text-sm hover:text-[#D4A853]">resv@raulsboutiquehotel.com</a>
                     </div>
                   </div>
                 </div>

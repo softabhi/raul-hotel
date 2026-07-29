@@ -42,7 +42,7 @@ export default function RoomDetailPage() {
     };
   }, [roomId]);
 
-  
+
   if (loading) {
     return (
       <>
@@ -86,7 +86,7 @@ export default function RoomDetailPage() {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <main className="pt-24">
         {/* Breadcrumb */}
         <div className="max-w-7xl mx-auto px-6 lg:px-10 mb-6">

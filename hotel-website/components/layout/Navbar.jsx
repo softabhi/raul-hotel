@@ -63,7 +63,7 @@ export default function Navbar() {
           </span>
           <span className="flex items-center gap-4">
             <span className="flex items-center gap-1">
-              <Phone size={11} /> +91 98765 43210
+              <Phone size={11} /> +91 88302 08310
             </span>
             <span>Mon–Sun 24/7</span>
           </span>

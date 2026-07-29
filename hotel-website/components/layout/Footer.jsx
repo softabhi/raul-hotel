@@ -86,12 +86,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 text-sm">
               {[
-                { label: "Full Menu", href: "/restaurant" },
-                { label: "Order Online", href: "/order" },
-                { label: "Veg Dishes", href: "/restaurant?type=veg" },
-                { label: "Non-Veg Dishes", href: "/restaurant?type=non-veg" },
-                { label: "Desserts", href: "/restaurant?cat=Desserts" },
-                { label: "Beverages", href: "/restaurant?cat=Beverages" },
+                { label: "Full Menu", href: "#" },
+                { label: "Order Online", href: "#" },
+                { label: "Veg Dishes", href: "#" },
+                { label: "Non-Veg Dishes", href: "#" },
+                { label: "Desserts", href: "#" },
+                { label: "Beverages", href: "#" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="hover:text-[#D4A853] transition-colors flex items-center gap-1 group">
@@ -109,15 +109,15 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={16} className="text-[#D4A853] mt-0.5 shrink-0" />
-                <span>12 Luxury Avenue, Panaji West, Goa — 400050, India</span>
+                <span>H. No.355, Machado Cove, Lane No.-09, Dona Paula, Pannum, Goa 403004</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} className="text-[#D4A853] shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-[#D4A853] transition-colors">+91 98765 43210</a>
+                <a href="tel:+919876543210" className="hover:text-[#D4A853] transition-colors">+91 8830208310</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} className="text-[#D4A853] shrink-0" />
-                <a href="mailto:hello@luxestaydine.com" className="hover:text-[#D4A853] transition-colors">hello@luxestaydine.com</a>
+                <a href="mailto:resv@raulsboutiquehotel.com" className="hover:text-[#D4A853] transition-colors">resv@raulsboutiquehotel.com</a>
               </li>
             </ul>
             <div className="mt-6 p-4 bg-[#1E293B] rounded-xl border border-[#D4A853]/20">
