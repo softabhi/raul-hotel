@@ -60,30 +60,38 @@ class RoomController extends Controller
             'available' => 'required|boolean',
             'images' => 'required|array|min:1',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
-            'amenities' => 'nullable|string', // Comma separated, we will split into array
+            'amenities' => 'nullable|string',
             'description' => 'required|string',
-            'highlights' => 'nullable|string', // Comma separated, we will split into array
+            'highlights' => 'nullable|string',
         ]);
 
+        //  dd($validated);
+
         // Process comma-separated strings to array
-        if (!empty($validated['amenities'])) {
-            $validated['amenities'] = array_map('trim', explode(',', $validated['amenities']));
-        } else {
-            $validated['amenities'] = [];
-        }
+        $validated['amenities'] = !empty($validated['amenities'])
+            ? array_map('trim', explode(',', $validated['amenities']))
+            : [];
 
-        if (!empty($validated['highlights'])) {
-            $validated['highlights'] = array_map('trim', explode(',', $validated['highlights']));
-        } else {
-            $validated['highlights'] = [];
-        }
+        $validated['highlights'] = !empty($validated['highlights'])
+            ? array_map('trim', explode(',', $validated['highlights']))
+            : [];
 
+        // Save images directly into public/rooms
         $imageUrls = [];
         if ($request->hasFile('images')) {
+            $destinationPath = public_path('rooms');
+
+            // Ensure the folder exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
             foreach ($request->file('images') as $file) {
-                $path = $file->store('rooms', 'public');
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move($destinationPath, $filename);
+
                 // Store as relative path so it works on any host/port
-                $imageUrls[] = '/storage/' . $path;
+                $imageUrls[] = '/rooms/' . $filename;
             }
         }
 
@@ -100,7 +108,7 @@ class RoomController extends Controller
     public function edit(Room $room)
     {
         $categories = ['Standard', 'Deluxe', 'Suite', 'Presidential'];
-        
+
         // Convert array back to comma-separated string for editing
         $room->amenities_str = is_array($room->amenities) ? implode(', ', $room->amenities) : '';
         $room->highlights_str = is_array($room->highlights) ? implode(', ', $room->highlights) : '';
@@ -132,25 +140,50 @@ class RoomController extends Controller
             'highlights' => 'nullable|string',
         ]);
 
-        if (!empty($validated['amenities'])) {
-            $validated['amenities'] = array_map('trim', explode(',', $validated['amenities']));
-        } else {
-            $validated['amenities'] = [];
-        }
+        // dd($validated);
+        // dump($request->all());
 
-        if (!empty($validated['highlights'])) {
-            $validated['highlights'] = array_map('trim', explode(',', $validated['highlights']));
-        } else {
-            $validated['highlights'] = [];
-        }
+        $validated['amenities'] = !empty($validated['amenities'])
+            ? array_map('trim', explode(',', $validated['amenities']))
+            : [];
+
+        $validated['highlights'] = !empty($validated['highlights'])
+            ? array_map('trim', explode(',', $validated['highlights']))
+            : [];
+
+                
 
         $imageUrls = $request->input('existing_images', []);
 
+        // Delete images that were removed by the user
+        // Use getRawOriginal to bypass the getImageAttribute mutator (which returns only the first image URL)
+        $rawImage = $room->getRawOriginal('image');
+        $oldImages = $rawImage ? json_decode($rawImage, true) : [];
+        if (!is_array($oldImages)) {
+            $oldImages = [];
+        }
+        $removedImages = array_diff($oldImages, $imageUrls);
+
+        foreach ($removedImages as $removedImage) {
+            $filePath = public_path(ltrim($removedImage, '/'));
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        // Save newly uploaded images directly into public/rooms
         if ($request->hasFile('images')) {
+            $destinationPath = public_path('rooms');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
             foreach ($request->file('images') as $file) {
-                $path = $file->store('rooms', 'public');
-                // Store as relative path so it works on any host/port
-                $imageUrls[] = '/storage/' . $path;
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move($destinationPath, $filename);
+
+                $imageUrls[] = '/rooms/' . $filename;
             }
         }
 
@@ -160,6 +193,7 @@ class RoomController extends Controller
 
         return redirect()->route('admin.rooms.index')->with('success', 'Room updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

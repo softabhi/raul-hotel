@@ -33,11 +33,11 @@
     @method('PUT')
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
+
         <!-- Room Name -->
         <div>
             <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Room / Suite Name *</label>
-            <input type="text" name="name" value="{{ old('name', $room->name) }}" required 
+            <input type="text" name="name" value="{{ old('name', $room->name) }}" required
                    placeholder="e.g. Classic Premium Ocean View"
                    class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all text-xs">
         </div>
@@ -160,7 +160,7 @@
                 <p class="text-xs font-semibold text-slate-600 mb-1">Click to add new images</p>
                 <p class="text-[10px] text-slate-400">PNG, JPG, JPEG, WEBP up to 5MB each. You can add multiple batches.</p>
                 <!-- Hidden real input — no name; we use a dynamic hidden input approach -->
-                <input type="file" id="room_images_picker" multiple accept="image/*" class="hidden" onchange="addNewImages(this)">
+                <input type="file" id="room_images_picker" name="images[]" multiple accept="image/*" class="hidden" onchange="addNewImages(this)">
                 <label for="room_images_picker" class="mt-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer transition-colors shadow-sm select-none">
                     Select Images
                 </label>
@@ -173,7 +173,7 @@
             <p id="new-images-count" class="text-center text-[10px] text-amber-600 font-semibold mt-3 hidden"></p>
         </div>
 
-        <!-- Hidden container where real file inputs are placed per-image -->
+        {{-- Hidden container — moved file inputs accumulate here and submit with the form normally --}}
         <div id="new-images-inputs" class="hidden"></div>
     </div>
 
@@ -221,10 +221,7 @@
         const item = btn.closest('.existing-img-item');
         if (!item) return;
         if (!confirm('Remove this image? This takes effect when you save.')) return;
-
         item.remove();
-
-        // If no existing images left, show the "no existing images" message
         const grid = document.getElementById('existing-images-grid');
         if (grid && grid.querySelectorAll('.existing-img-item').length === 0) {
             document.getElementById('existing-images-wrapper').classList.add('hidden');
@@ -232,89 +229,73 @@
         }
     }
 
-    // ─── Accumulative new-image picker ──────────────────────────────────────
-    // We store queued File objects in a JS array, then sync them to hidden
-    // <input type="file"> elements right before form submit.
-    let queuedFiles = [];   // array of File objects
+    // ─── Multi-batch file picker (move-and-replace approach) ─────────────────
+    // When user picks files we MOVE the live input (with its real File objects)
+    // into a hidden container that is inside the <form>. A fresh picker replaces it.
+    // On submit the form sends all the accumulated inputs normally — no DataTransfer,
+    // no AJAX, no browser-compatibility issues.
+
+    let pickerCount = 0;  // used to give each moved input a unique id
+
+    function createFreshPicker() {
+        const picker = document.createElement('input');
+        picker.type      = 'file';
+        picker.id        = 'room_images_picker';
+        picker.name      = 'images[]';
+        picker.multiple  = true;
+        picker.accept    = 'image/*';
+        picker.className = 'hidden';
+        picker.addEventListener('change', function () { addNewImages(this); });
+        return picker;
+    }
 
     function addNewImages(input) {
         if (!input.files || input.files.length === 0) return;
 
-        Array.from(input.files).forEach(file => {
-            // Avoid duplicates by name+size
-            const isDupe = queuedFiles.some(f => f.name === file.name && f.size === file.size);
-            if (!isDupe) queuedFiles.push(file);
-        });
+        const files = Array.from(input.files);
 
-        // Reset the picker so the same file can be re-selected later
-        input.value = '';
+        // 1. Move the real input (files intact) into the hidden form container
+        const container = document.getElementById('new-images-inputs');
+        input.id        = 'moved_picker_' + (++pickerCount); // free the id
+        input.className = 'hidden';
+        container.appendChild(input);
 
-        renderNewPreviews();
+        // 2. Insert a brand-new picker where the old one was (label still points to room_images_picker)
+        const label      = document.querySelector('label[for="room_images_picker"]');
+        const freshPicker = createFreshPicker();
+        label.parentNode.insertBefore(freshPicker, label);
+
+        // 3. Show previews of the just-selected files
+        previewFiles(files);
     }
 
-    function renderNewPreviews() {
-        const container = document.getElementById('new-images-preview');
+    function previewFiles(files) {
+        const container  = document.getElementById('new-images-preview');
         const countBadge = document.getElementById('new-images-count');
-        container.innerHTML = '';
-
-        if (queuedFiles.length === 0) {
-            container.classList.add('hidden');
-            countBadge.classList.add('hidden');
-            return;
-        }
 
         container.classList.remove('hidden');
         countBadge.classList.remove('hidden');
-        countBadge.textContent = `${queuedFiles.length} new image${queuedFiles.length > 1 ? 's' : ''} queued for upload`;
 
-        queuedFiles.forEach((file, index) => {
+        files.forEach(file => {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const div = document.createElement('div');
                 div.className = 'relative aspect-video rounded-xl overflow-hidden border border-slate-200 bg-slate-100 group';
-                div.dataset.index = index;
                 div.innerHTML = `
                     <img src="${e.target.result}" class="w-full h-full object-cover" alt="${file.name}">
                     <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
                         <span class="text-[9px] text-white font-medium truncate px-2 pb-1 w-full">${file.name}</span>
-                    </div>
-                    <button type="button" onclick="removeQueuedImage(${index})"
-                            class="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-500 hover:bg-rose-600 active:scale-90 text-white flex items-center justify-center shadow-md transition-all z-10 cursor-pointer"
-                            title="Remove from queue">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                `;
+                    </div>`;
                 container.appendChild(div);
             };
             reader.readAsDataURL(file);
         });
+
+        // Update the badge count from all moved inputs
+        const total = Array.from(document.getElementById('new-images-inputs').querySelectorAll('input[type=file]'))
+            .reduce((sum, inp) => sum + inp.files.length, 0);
+        countBadge.textContent = `${total} new image${total !== 1 ? 's' : ''} queued for upload`;
     }
-
-    function removeQueuedImage(index) {
-        queuedFiles.splice(index, 1);
-        renderNewPreviews();
-    }
-
-    // ─── Before submit: inject queued files as real form inputs ─────────────
-    // Because file inputs cannot be set programmatically, we use a single
-    // DataTransfer trick to attach all queued files to one hidden input.
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const inputsDiv = document.getElementById('new-images-inputs');
-        inputsDiv.innerHTML = ''; // clear old
-
-        if (queuedFiles.length > 0) {
-            const dt = new DataTransfer();
-            queuedFiles.forEach(f => dt.items.add(f));
-
-            const inp = document.createElement('input');
-            inp.type = 'file';
-            inp.name = 'images[]';
-            inp.multiple = true;
-            inp.files = dt.files;    // assign the FileList
-            inputsDiv.appendChild(inp);
-        }
-        // If queuedFiles is empty, no images[] input is submitted — existing_images[] handles the rest
-    });
 </script>
 @endsection
 
