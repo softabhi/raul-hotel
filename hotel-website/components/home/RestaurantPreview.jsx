@@ -40,9 +40,9 @@ export default function RestaurantPreview() {
               From authentic Indian curries to continental delicacies — our chefs craft each dish with passion and the freshest ingredients.
             </p>
           </div>
-          <Link href="/restaurant" className="btn-outline-gold whitespace-nowrap">
+          {/* <Link href="/restaurant" className="btn-outline-gold whitespace-nowrap">
             Full Menu <ArrowRight size={16} />
-          </Link>
+          </Link> */}
         </div>
 
         {/* Veg/Non-Veg legend */}

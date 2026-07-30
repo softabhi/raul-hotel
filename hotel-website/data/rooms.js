@@ -201,6 +201,6 @@ export const rooms = [
   },
 ];
 
-export const roomCategories = ["All", "Standard", "Deluxe", "Suite", "Presidential"];
+export const roomCategories = ["All", "Standard", "Deluxe", "Family room"];
 
 export const getRoomById = (id) => rooms.find((r) => r.id === parseInt(id));

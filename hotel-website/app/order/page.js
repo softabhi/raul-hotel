@@ -162,7 +162,7 @@ function OrderContent() {
                 </div>
                 <div className="col-span-2 md:col-span-1">
                   <label className="text-xs text-gray-500 mb-1 block">Phone *</label>
-                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 98765 43210" className="input-field" />
+                  <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 88302 08310" className="input-field" />
                 </div>
                 <div className="col-span-2">
                   <label className="text-xs text-gray-500 mb-1 block">Email</label>

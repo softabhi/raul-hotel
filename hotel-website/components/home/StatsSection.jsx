@@ -10,10 +10,10 @@ export default function StatsSection() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: "15+", label: "Years of Excellence" },
-              { value: "50+", label: "Luxury Rooms" },
-              { value: "12,000+", label: "Guests Served" },
-              { value: "25+", label: "Awards Won" },
+              { value: "20+", label: "Experienced Members" },
+              { value: "9+", label: "Elegant Rooms" },
+              { value: "24/7", label: "Guest Support" },
+              { value: "100%", label: "Comfort & Hospitality" },
             ].map((s) => (
               <div key={s.label}>
                 <div className="font-playfair text-4xl md:text-5xl font-bold text-[#0F172A]">{s.value}</div>

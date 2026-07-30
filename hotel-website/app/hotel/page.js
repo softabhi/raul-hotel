@@ -107,7 +107,7 @@ export default function HotelPage() {
               {[
                 { icon: "🏆", title: "Award-Winning", desc: "5-star luxury experience" },
                 { icon: "🍳", title: "Free Breakfast", desc: "Complimentary for all guests" },
-                { icon: "🏊", title: "Rooftop Pool", desc: "Infinity pool with panoramic views" },
+                { icon: "🏊", title: "Rooftop Pool", desc: "Swimming pool with panoramic views" },
                 { icon: "🚗", title: "Free Parking", desc: "Valet service included" },
               ].map((w) => (
                 <div key={w.title} className="p-5 bg-white/5 rounded-2xl border border-white/10">

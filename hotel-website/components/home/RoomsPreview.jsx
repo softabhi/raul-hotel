@@ -39,8 +39,8 @@ export default async function RoomsPreview() {
         {/* Stats bar */}
         <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { value: "50+", label: "Luxury Rooms" },
-            { value: "4", label: "Room Categories" },
+            { value: "9+", label: "Luxury Rooms" },
+            { value: "3", label: "Room Categories" },
             { value: "98%", label: "Guest Satisfaction" },
             { value: "24/7", label: "Concierge Service" },
           ].map((s) => (

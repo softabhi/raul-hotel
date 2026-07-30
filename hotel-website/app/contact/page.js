@@ -55,7 +55,7 @@ export default function ContactPage() {
                     <Mail size={20} className="text-[#D4A853]" />
                     <div>
                       <p className="font-medium text-sm">Email</p>
-                      <a href="mailto:resv@raulsboutiquehotel.com" className="text-gray-400 text-sm hover:text-[#D4A853]">resv@raulsboutiquehotel.com</a>
+                      <a href="mailto:gm@raulsboutiquehotel.com" className="text-gray-400 text-sm hover:text-[#D4A853]">gm@raulsboutiquehotel.com</a>
                     </div>
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <label className="text-xs text-gray-500 mb-1 block">Phone</label>
-                        <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 98765 43210" className="input-field" />
+                        <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 88302 08310" className="input-field" />
                       </div>
                       <div>
                         <label className="text-xs text-gray-500 mb-1 block">Subject *</label>
@@ -155,9 +155,9 @@ export default function ContactPage() {
             <Image src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1400&q=80" alt="Map" fill className="object-cover opacity-40" />
             <div className="relative z-10 text-center">
               <MapPin size={40} className="text-[#D4A853] mx-auto mb-2" />
-              <p className="font-semibold text-[#0F172A]">12 Luxury Avenue, Bandra West, Mumbai</p>
+              <p className="font-semibold text-[#0F172A]">Raul's Boutique Hotel, H. No.355, Machado Cove, Lane No.-09, Dona Paula, Pannum, Goa 403004</p>
               <a
-                href="https://maps.google.com"
+                href="https://www.google.com/maps/place/15%C2%B027'22.2%22N+73%C2%B049'06.2%22E/@15.4561526,73.8158014,1087m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d15.4561526!4d73.8183763?hl=en&entry=ttu&g_ep=EgoyMDI2MDcyNy4wIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gold mt-3 inline-flex"

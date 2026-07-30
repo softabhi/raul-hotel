@@ -5,7 +5,7 @@ const features = [
   { icon: Utensils, title: "Fine Dining", desc: "Award-winning restaurant open 7 days a week" },
   { icon: Car, title: "Valet Parking", desc: "Complimentary valet service for all guests" },
   { icon: Airplay, title: "App Service", desc: "Guest convinience service app" },
-  { icon: Waves, title: "Infinity Pool", desc: "Rooftop pool with panoramic city views" },
+  { icon: Waves, title: "Swimming Pool", desc: "Take a refreshing dip in our beautifully maintained outdoor pool" },
   { icon: Shield, title: "24/7 Security", desc: "Round-the-clock security for your peace of mind" },
   { icon: Clock, title: "24/7 Room Service", desc: "In-room dining available around the clock" },
   { icon: Coffee, title: "Cafe & Refreshments", desc: "Tea, Coffee, Mineral Water" },

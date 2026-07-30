@@ -133,7 +133,7 @@ export default function Navbar() {
             {/* <Link href="/restaurant" className="btn-outline-gold !py-2 !px-4 !text-sm">
               <UtensilsCrossed size={15} /> Order Food
             </Link> */}
-            <Link href="/booking" className="btn-gold !py-2 !px-4 !text-sm">
+            <Link href="https://letsbook.me/booking/raulsboutiquehotelbydonapaulaseaviewhotel?checkin=2026-07-30&checkout=2026-07-31&adults=2&children=0" className="btn-gold !py-2 !px-4 !text-sm">
               <Hotel size={15} /> Book Room
             </Link>
           </div>
@@ -182,7 +182,7 @@ export default function Navbar() {
                 <Link href="/restaurant" onClick={() => setMobileOpen(false)} className="btn-outline-gold justify-center">
                   <UtensilsCrossed size={15} /> Order Food
                 </Link>
-                <Link href="/booking" onClick={() => setMobileOpen(false)} className="btn-gold justify-center">
+                <Link href="https://letsbook.me/booking/raulsboutiquehotelbydonapaulaseaviewhotel?checkin=2026-07-30&checkout=2026-07-31&adults=2&children=0" onClick={() => setMobileOpen(false)} className="btn-gold justify-center">
                   <Hotel size={15} /> Book Room
                 </Link>
               </div>

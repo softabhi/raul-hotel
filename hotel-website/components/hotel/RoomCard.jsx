@@ -76,7 +76,7 @@ export default function RoomCard({ room }) {
               Details
             </Link>
             <Link
-              href={room.available ? `/booking?room=${room.id}` : "#"}
+              href={"https://letsbook.me/booking/raulsboutiquehotelbydonapaulaseaviewhotel?checkin=2026-07-29&checkout=2026-07-30&adults=2&children=0"}
               className={room.available ? "btn-gold !py-2 !px-3 !text-xs" : "bg-gray-200 text-gray-400 py-2 px-3 rounded-lg text-xs cursor-not-allowed"}
             >
               {room.available ? "Book Now" : "Unavailable"}

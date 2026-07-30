@@ -58,7 +58,7 @@ export default function BookingForm({ room }) {
             <span>₹{subtotal.toLocaleString()}</span>
           </div>
           <div className="flex justify-between text-sm text-gray-600">
-            <span>GST (18%)</span>
+            <span>GST (5%)</span>
             <span>₹{gst.toLocaleString()}</span>
           </div>
           <div className="flex justify-between font-bold text-[#0F172A] pt-2 border-t border-gray-200">
@@ -82,6 +82,7 @@ export default function BookingForm({ room }) {
           "Room Unavailable"
         )}
       </Link>
+
 
       <p className="text-xs text-gray-400 text-center">Free cancellation up to 24 hours before check-in</p>
     </div>

@@ -2,7 +2,8 @@
 
 import { foods, getFoodById } from "@/data/foods";
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://raul-admin.senses.anubhabdiagnostics.com";
+// export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 /**
  * Fetch all rooms from the API (with fallback).

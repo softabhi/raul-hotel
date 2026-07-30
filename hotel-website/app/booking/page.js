@@ -114,7 +114,7 @@ function BookingContent() {
                     <label className="text-xs font-medium text-gray-500 mb-1 block flex items-center gap-1">
                       <Phone size={11} /> Phone *
                     </label>
-                    <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 98765 43210" className="input-field" />
+                    <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+91 88302 08310" className="input-field" />
                   </div>
                 </div>
                 <div>
@@ -248,7 +248,7 @@ function BookingContent() {
                     <span>₹{subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
-                    <span>GST (18%)</span>
+                    <span>GST (5%)</span>
                     <span>₹{gst.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between font-bold text-[#0F172A] pt-2 border-t border-gray-100">

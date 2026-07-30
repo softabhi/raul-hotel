@@ -195,7 +195,7 @@ export default function RoomDetailPage() {
             <div className="lg:col-span-1">
               <div className="sticky top-28">
                 {/* Price card */}
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden mb-5">
+                {/* <div className="bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden mb-5">
                   <div className="bg-[#0F172A] p-5">
                     <div className="flex items-baseline gap-2">
                       <span className="text-3xl font-bold text-white">₹{room.price?.toLocaleString()}</span>
@@ -204,18 +204,18 @@ export default function RoomDetailPage() {
                       )}
                       {discount > 0 && <span className="badge-gold">{discount}% OFF</span>}
                     </div>
-                    <p className="text-gray-400 text-xs mt-1">per night + 18% GST</p>
+                    <p className="text-gray-400 text-xs mt-1">per night + 5% GST</p>
                   </div>
                   <div className="p-5">
                     <BookingForm room={room} />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Need help */}
                 <div className="bg-[#FAFAF8] rounded-2xl p-5 border border-gray-100 text-center">
                   <p className="text-sm text-gray-600 mb-3">Need help or have questions?</p>
-                  <a href="tel:+919876543210" className="btn-outline-gold w-full justify-center !py-2.5">
-                    📞 Call Us: +91 98765 43210
+                  <a href="tel:+918830208310" className="btn-outline-gold w-full justify-center !py-2.5">
+                    📞 Call Us: +91 8830208310
                   </a>
                 </div>
               </div>

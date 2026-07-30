@@ -23,13 +23,13 @@ export default function RoomFilters({ activeCategory, setActiveCategory, priceRa
             {cat}
           </button>
         ))}
-        <button
+        {/* <button
           onClick={() => setShowFilters(!showFilters)}
           className="ml-auto flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-white border border-gray-200 text-gray-600 hover:border-[#D4A853] transition-all"
         >
           <SlidersHorizontal size={15} />
           Filters
-        </button>
+        </button> */}
       </div>
 
       {/* Advanced filters */}

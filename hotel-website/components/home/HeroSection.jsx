@@ -6,19 +6,19 @@ import { Hotel, UtensilsCrossed, ChevronDown, Star, Play, ArrowRight } from "luc
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920&q=85",
+    image: "/1.webp",
     title: "A World of",
     highlight: "Unmatched Luxury",
     sub: "Experience the finest hospitality — where every detail tells a story of elegance.",
   },
   {
-    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=85",
+    image: "/2.jpg.jpeg",
     title: "Rest in",
     highlight: "Absolute Comfort",
     sub: "Handcrafted suites and rooms designed to make every stay unforgettable.",
   },
   {
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=85",
+    image: "/desktop size.jpg.jpeg",
     title: "Dine with",
     highlight: "Exquisite Flavors",
     sub: "An award-winning restaurant that transforms every meal into a masterpiece.",
@@ -73,12 +73,12 @@ export default function HeroSection() {
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4">
-            <Link href="/booking" className="btn-gold !text-base !py-3.5 !px-7 animate-pulse-gold">
+            <Link href="https://letsbook.me/booking/raulsboutiquehotelbydonapaulaseaviewhotel?checkin=2026-07-30&checkout=2026-07-31&adults=2&children=0" className="btn-gold !text-base !py-3.5 !px-7 animate-pulse-gold">
               <Hotel size={18} /> Book Your Stay
             </Link>
-            <Link href="/restaurant" className="btn-dark !text-base !py-3.5 !px-7">
+            {/* <Link href="/restaurant" className="btn-dark !text-base !py-3.5 !px-7">
               <UtensilsCrossed size={18} /> Explore Menu
-            </Link>
+            </Link> */}
           </div>
 
           {/* Slide indicators */}
@@ -114,7 +114,7 @@ export default function HeroSection() {
                 </select>
               </div>
               <div className="flex items-end">
-                <Link href="/hotel" className="btn-gold w-full justify-center !py-2.5">
+                <Link href="https://letsbook.me/booking/raulsboutiquehotelbydonapaulaseaviewhotel?checkin=2026-07-30&checkout=2026-07-31&adults=2&children=0" className="btn-gold w-full justify-center !py-2.5">
                   Search Rooms <ArrowRight size={16} />
                 </Link>
               </div>
